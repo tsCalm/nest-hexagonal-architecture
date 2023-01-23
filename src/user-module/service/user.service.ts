@@ -8,11 +8,6 @@ import {
   FindAllUserOutboundPort,
   FINDAll_USER_OUTBOUND_PORT,
 } from '../outbound-port/findall-user.outbound-port';
-// import { Inject } from '@nestjs/common';
-// import {
-//   FIND_MEMBERS_OUTBOUND_PORT,
-//   FindMembersOutboundPort,
-// } from '../outbound-port/find-members.outbound-port';
 
 export class FindAllUsersService implements FindALLUserInboundPort {
   constructor(
@@ -24,6 +19,5 @@ export class FindAllUsersService implements FindALLUserInboundPort {
     params: FindUserInboundPortInputDto,
   ): Promise<FindUserInboundPortOutputDto> {
     return this.findAllUserOutboudPort.execute();
-    // return this.findMembersOutboundPort.execute();
   }
 }
