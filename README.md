@@ -1,73 +1,48 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## 헥사고날 - 육각형, 외부에 의존하지 않음 즉 바꾸기 쉽다, 테스트하기쉽다, 외부 요인으로 인해 도메인을 수정하지 않아도 된다.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 헥사고날은 왜 헥사고날이냐? 육각형은 의미가 없다, 충분히 많은 수의 포트와 어댑터를 그리려 하다보니 육각형이 됐다고 함
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+- 클린 아키텍쳐-> 의존성 방향을 단방향으로 해야 인프라를 제어할 수 있음에 기초
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- 레이어드 아키텍쳐와 차이 -> 외부에 의존하지 않음
 
-## Installation
+- 제일 중요 -> 내부(캡슐화된 도메인 계층)와 외부(컨트롤러, 디비 접근 프로바이더)를 따로 둠
 
-```bash
-$ npm install
-```
+## 네스트에서 헥사고날을 적용하려면?
 
-## Running the app
+- 포트
+1. 포트는 인터페이스이고
+2. 도메인이 캡슐화되어 있고 외부에 의존하지 않는다.
+3. 인터페이스 내부에 규칙을 미리 정하고 그 규칙하에 외부와 소통하겠다 
 
-```bash
-# development
-$ npm run start
+- 크게 두가지 종류가 있음
 
-# watch mode
-$ npm run start:dev
+  - 1. in port
+  - 2. out port
 
-# production mode
-$ npm run start:prod
-```
+- 어댑터
+1. 인프라스트럭쳐와 포트 사이에 커뮤니케이션을 담당
+2. 동일한 포트에 다른 인프라스트럭쳐 컴포넌트를 얹으려면? 다른 어댑터가 들어가서 구현이 된다.
 
-## Test
+- 크게 두가지 종류
 
-```bash
-# unit tests
-$ npm run test
+  1. in adapter
+    - 실제 인터페이스의 구현이 도메인 내부에 있는 것이 핵심
+    - 외부 어댑터는 단순히 그 구현을 사용하는 것이다.
 
-# e2e tests
-$ npm run test:e2e
+  2. out adapter
+    - in과는 반대로 어ㅏ댑터에서 실제 인터페이스 구현이 발생한다.
+    - 도메인 계층에서는 그것을 사용하기만 한다.
+## 공통
+ 1. 도메인을 사용하려는 포트, 도메인으로 들어오는 요청에 대한것은 in port, 
+  - ex) api
+ 2. 도메인이 요청하는 포트, 도메인이 외부로 요청하는 것은 out port
+  - ex) DB, messaging
 
-# test coverage
-$ npm run test:cov
-```
+  - 포트를 나누는 이유는?
+    - port 자체는 차이가 없지만, 이 port를 사용하는 adapter 구현에서 차이가 있다.
+    - adapter도 마찬가지로 in/out
 
-## Support
+## 결론: 외부로 나가는 의존성이 없는 도메인을 가질 수 있게된다.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
