@@ -17,5 +17,7 @@ export const MemoryDatabase = (() => {
 
   return {
     findAll: () => Promise.resolve(members),
+    findOne: (id: number) =>
+      Promise.resolve(members.find((user) => user.id === id)),
   };
 })();

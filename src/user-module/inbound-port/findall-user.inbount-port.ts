@@ -8,7 +8,7 @@ export type FindUserInboundPortOutputDto = Array<{
 
 export const FINDALL_USER_INBOUND_PORT = 'FINDALL_USER_INBOUND_PORT' as const;
 
-export interface FindALLUserInboundPort {
+export interface FindAllUserInboundPort {
   execute(
     params: FindUserInboundPortInputDto,
   ): Promise<FindUserInboundPortOutputDto>;

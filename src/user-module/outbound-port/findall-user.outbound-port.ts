@@ -6,7 +6,7 @@ export type FindAllUserOutboundPortOutputDto = Array<{
   phone: string;
 }>;
 
-export const FINDAll_USER_OUTBOUND_PORT = 'FINDAll_USER_OUTBOUND_PORT' as const;
+export const FINDALL_USER_OUTBOUND_PORT = 'FINDALL_USER_OUTBOUND_PORT' as const;
 
 export interface FindAllUserOutboundPort {
   execute(

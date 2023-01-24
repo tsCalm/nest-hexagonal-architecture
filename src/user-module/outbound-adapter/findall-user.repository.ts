@@ -9,9 +9,9 @@ export class FindAllUserRepository implements FindAllUserOutboundPort {
   async execute(
     params: FindAllUserOutboundPortInputDto,
   ): Promise<FindAllUserOutboundPortOutputDto> {
-    const members = await MemoryDatabase.findAll();
+    const users = await MemoryDatabase.findAll();
 
-    return members.map((member) => {
+    return users.map((member) => {
       return {
         name: member.name,
         email: member.email,
