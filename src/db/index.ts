@@ -28,5 +28,18 @@ export const MemoryDatabase = (() => {
       users.push(newUser);
       return Promise.resolve(newUser);
     },
+    update: (id: number, updateInput: Partial<UserInput>) => {
+      const findedUser = users.find((user) => user.id === id);
+      if (!findedUser) Promise.reject('User not found');
+      Object.assign(findedUser, updateInput);
+      return Promise.resolve(findedUser);
+    },
+    delete: (id: number) => {
+      const idx = users.findIndex((user) => user.id === id);
+      if (idx === -1) Promise.reject('User not found');
+      users.splice(idx, 1);
+      Promise.resolve();
+      // users = newUsers;
+    },
   };
 })();

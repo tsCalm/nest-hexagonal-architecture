@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -22,6 +23,10 @@ import {
   FindOneUserInboundPort,
   FINDONE_USER_INBOUND_PORT,
 } from '../inbound-port/findone-user-inbound-port';
+import {
+  UpdateUserInboundPort,
+  UPDATE_USER_INBOUND_PORT,
+} from '../inbound-port/update-user.inbound-port';
 
 @Controller('users')
 export class UserController {
@@ -32,6 +37,8 @@ export class UserController {
     private readonly findOneInboundPort: FindOneUserInboundPort,
     @Inject(CREATE_USER_INBOUND_PORT)
     private readonly createInboundPort: CreateUserInboundPort,
+    @Inject(UPDATE_USER_INBOUND_PORT)
+    private readonly updateInboundPort: UpdateUserInboundPort,
   ) {}
 
   @Get()
@@ -47,5 +54,13 @@ export class UserController {
   @Post()
   async create(@Body() createDto: CreateUserInboundPortInputDto) {
     return await this.createInboundPort.execute(createDto);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createDto: CreateUserInboundPortInputDto,
+  ) {
+    return await this.updateInboundPort.execute(id, createDto);
   }
 }

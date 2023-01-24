@@ -6,18 +6,9 @@ import {
 } from '../inbound-port/create-user.inbound-port';
 
 import {
-  FindOneUserInboundPort,
-  FindOneUserInboundPortInputDto,
-  FindOneUserInboundPortOutputDto,
-} from '../inbound-port/findone-user-inbound-port';
-import {
   CreateUserOutboundPort,
   CREATE_USER_OUTBOUND_PORT,
 } from '../outbound-port/create-user.outbound-port';
-import {
-  FindOneUserOutboundPort,
-  FINDONE_USER_OUTBOUND_PORT,
-} from '../outbound-port/findone-user.outbound-port';
 
 export class CreateUsersService implements CreateUserInboundPort {
   constructor(
