@@ -36,9 +36,9 @@ export const MemoryDatabase = (() => {
     },
     delete: (id: number) => {
       const idx = users.findIndex((user) => user.id === id);
-      if (idx === -1) Promise.reject('User not found');
+      if (idx === -1) return Promise.reject(false);
       users.splice(idx, 1);
-      Promise.resolve();
+      return Promise.resolve(true);
       // users = newUsers;
     },
   };
