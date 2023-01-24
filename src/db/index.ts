@@ -5,8 +5,10 @@ export type User = {
   phone: string;
 };
 
+export type UserInput = Omit<User, 'id'>;
+
 export const MemoryDatabase = (() => {
-  const members = [
+  const users = [
     {
       id: 1,
       name: 'limsm',
@@ -16,8 +18,15 @@ export const MemoryDatabase = (() => {
   ] as User[];
 
   return {
-    findAll: () => Promise.resolve(members),
+    findAll: () => Promise.resolve(users),
     findOne: (id: number) =>
-      Promise.resolve(members.find((user) => user.id === id)),
+      Promise.resolve(users.find((user) => user.id === id)),
+    create: (user: UserInput) => {
+      const ids = users.map((user) => user.id);
+      const lastIndex = Math.max(...ids);
+      const newUser = { ...user, id: lastIndex + 1 };
+      users.push(newUser);
+      return Promise.resolve(newUser);
+    },
   };
 })();

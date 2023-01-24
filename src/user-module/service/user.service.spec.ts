@@ -10,6 +10,12 @@ import {
   FindOneUserOutboundPortOutputDto,
 } from '../outbound-port/findone-user.outbound-port';
 import { FindOneUsersService } from './findone-user.service';
+import { CreateUsersService } from './create-user.service';
+import {
+  CreateUserOutboundPort,
+  CreateUserOutboundPortInputDto,
+  CreateUserOutboundPortOutputDto,
+} from '../outbound-port/create-user.outbound-port';
 
 class MockFindAllUsersOutboundPort implements FindAllUserOutboundPort {
   private readonly result: FindAllUserOutboundPortOutputDto;
@@ -36,6 +42,20 @@ class MockFindOneUsersOutboundPort implements FindOneUserOutboundPort {
     params: FindOneUserOutboundPortInputDto,
   ): Promise<FindOneUserOutboundPortOutputDto> {
     if (!this.result) throw new Error('User not found');
+    return this.result;
+  }
+}
+
+class MockCreateUsersOutboundPort implements CreateUserOutboundPort {
+  private readonly result: CreateUserOutboundPortOutputDto;
+
+  constructor(result: CreateUserOutboundPortOutputDto) {
+    this.result = result;
+  }
+
+  async execute(
+    params: CreateUserOutboundPortInputDto,
+  ): Promise<CreateUserOutboundPortOutputDto> {
     return this.result;
   }
 }
@@ -78,6 +98,27 @@ describe('FindOneUserSerivce Spec', () => {
     );
 
     const res = await findMemberService.execute(1);
+
+    expect(res).toStrictEqual({
+      name: 'limsm',
+      email: 'test@gmail.com',
+      phone: '01012341234',
+    });
+  });
+});
+
+describe('FindOneUserSerivce Spec', () => {
+  test('유저를 반환한다.', async () => {
+    const member = {
+      name: 'limsm',
+      email: 'test@gmail.com',
+      phone: '01012341234',
+    };
+    const createMemberService = new CreateUsersService(
+      new MockCreateUsersOutboundPort(member),
+    );
+
+    const res = await createMemberService.execute(member);
 
     expect(res).toStrictEqual({
       name: 'limsm',
